@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS workouts (
     name VARCHAR(100) NOT NULL,
     duration INT NOT NULL,
     calories_burned DOUBLE NOT NULL,
+    logged_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -23,6 +24,7 @@ CREATE TABLE IF NOT EXISTS meals (
     name VARCHAR(100) NOT NULL,
     calories DOUBLE NOT NULL,
     nutritional_info VARCHAR(255),
+    logged_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
