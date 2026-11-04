@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.fitnesstrackerapp.auth;
 
 import com.mycompany.fitnesstrackerapp.db.DatabaseConnection;
@@ -101,23 +97,5 @@ public class AuthService {
         }
     }
 }
-
-/* Marvs palagay nalang sa schema.mysql
-
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    name VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL      -- SHA-256 hash (64 chars)
-);
-
-CREATE TABLE IF NOT EXISTS goals (
-    user_id INT PRIMARY KEY,
-    daily_calorie_intake DOUBLE NOT NULL DEFAULT 0,
-    daily_calorie_burn DOUBLE NOT NULL DEFAULT 0,
-    weekly_workout_minutes INT NOT NULL DEFAULT 0,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-); */
-
 
 

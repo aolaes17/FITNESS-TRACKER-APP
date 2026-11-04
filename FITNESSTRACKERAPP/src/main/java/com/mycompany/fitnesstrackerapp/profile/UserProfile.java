@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.fitnesstrackerapp.profile;
 
 import com.mycompany.fitnesstrackerapp.auth.AuthService;
@@ -66,7 +62,6 @@ public class UserProfile {
         user.setUsername(username);
     }
 
-    /** Pinapalitan ang password matapos i-verify ang kasalukuyan. */
     public static void changePassword(User user, String currentPassword, String newPassword) throws SQLException {
         if (newPassword == null || newPassword.length() < 6) {
             throw new IllegalArgumentException("New password must be at least 6 characters.");
@@ -92,8 +87,7 @@ public class UserProfile {
     }
 
     // ---------- GOALS ----------
-
-    /** Kung wala pang naka-save, 0 ang lahat. */
+    
     public static Goals getGoals(int userId) throws SQLException {
         String sql = "SELECT daily_calorie_intake, daily_calorie_burn, weekly_workout_minutes "
                    + "FROM goals WHERE user_id = ?";

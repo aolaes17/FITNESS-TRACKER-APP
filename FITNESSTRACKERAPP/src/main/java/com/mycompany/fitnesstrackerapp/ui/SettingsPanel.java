@@ -1,11 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.fitnesstrackerapp.ui;
 
 import com.mycompany.fitnesstrackerapp.model.User;
@@ -18,7 +10,7 @@ import java.sql.SQLException;
 public class SettingsPanel extends JPanel {
 
     private final User user;
-    private final Runnable onLogout;   // ibibigay ni Noel mula sa MainDashboard (pwedeng null)
+    private final Runnable onLogout; 
 
     private JTextField txtName, txtUsername;
     private JPasswordField txtCurrentPassword, txtNewPassword, txtConfirmPassword;
