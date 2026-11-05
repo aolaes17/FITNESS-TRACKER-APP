@@ -56,6 +56,9 @@ public class WorkoutPanels extends JPanel implements ActionListener {
         btndelete.setBounds(400,110,85,20);
         add(btndelete);
         
+        btnadd.addActionListener(this);
+        btndelete.addActionListener(this);
+        
         model = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -69,19 +72,14 @@ public class WorkoutPanels extends JPanel implements ActionListener {
         scrollWorkouts = new JScrollPane(tblWorkouts);
         scrollWorkouts.setBounds(30, 160, 640, 280);
         add(scrollWorkouts);
-
-        //Sample data (pang-display lang)
-        //model.addRow(new Object[]{1, "Running", 30, 300.0});
-        //model.addRow(new Object[]{2, "Push-ups", 15, 100.0});
-        //model.addRow(new Object[]{3, "Cycling", 45, 400.0});
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnadd) {
-            // TODO
+           //FUNCTION 
         } else if (e.getSource() == btndelete) {
-            // TODO
+            //FUNCTION
         }
         
     }
