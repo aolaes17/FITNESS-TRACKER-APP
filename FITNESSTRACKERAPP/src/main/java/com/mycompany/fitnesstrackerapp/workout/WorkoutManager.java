@@ -6,6 +6,7 @@ package com.mycompany.fitnesstrackerapp.workout;
 
 import com.mycompany.fitnesstrackerapp.model.Workout;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 public class WorkoutManager {
 
 
@@ -18,8 +19,9 @@ public class WorkoutManager {
     
     public void addWorkout(String name, int duration, double caloriesBurned) {
         Workout w = new Workout(nextId, name, duration, caloriesBurned);
-        workouts.add(w);
-        nextId++;
+         w.setLoggedAt(LocalDateTime.now());
+         workouts.add(w);
+         nextId++;
     }
 
    
