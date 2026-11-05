@@ -1,6 +1,7 @@
 package com.mycompany.fitnesstrackerapp.meal;
 
 import com.mycompany.fitnesstrackerapp.db.DatabaseConnection;
+import com.mycompany.fitnesstrackerapp.model.Meal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
