@@ -1,10 +1,13 @@
 package com.mycompany.fitnesstrackerapp.model;
 
+import java.time.LocalDateTime;
+
 public class Meal {
     private int mealId;
     private String name;
     private double calories;
     private String nutritionalInfo;
+    private LocalDateTime loggedAt;
 
     public Meal() {
     }
@@ -27,4 +30,7 @@ public class Meal {
 
     public String getNutritionalInfo() { return nutritionalInfo; }
     public void setNutritionalInfo(String nutritionalInfo) { this.nutritionalInfo = nutritionalInfo; }
+
+    public LocalDateTime getLoggedAt() { return loggedAt; }
+    public void setLoggedAt(LocalDateTime loggedAt) { this.loggedAt = loggedAt; }
 }
