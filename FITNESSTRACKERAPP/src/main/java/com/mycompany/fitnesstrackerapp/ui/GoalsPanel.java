@@ -6,87 +6,103 @@ import com.mycompany.fitnesstrackerapp.model.Workout;
 import com.mycompany.fitnesstrackerapp.profile.UserProfile;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 
 public class GoalsPanel extends JPanel {
 
     private final User user;
     private UserProfile.Goals goals = new UserProfile.Goals(0, 0, 0);
 
+    private JLabel lblTitle, lblIntake, lblBurn, lblMinutes, lblProgress;
+    private JLabel lblBarIntake, lblBarBurn, lblBarMinutes;
     private JTextField txtCalorieIntake, txtCalorieBurn, txtWeeklyMinutes;
     private JButton btnSaveGoals;
     private JProgressBar barIntake, barBurn, barMinutes;
 
     public GoalsPanel(User user) {
         this.user = user;
-        setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        setLayout(null);
+        setPreferredSize(new Dimension(620, 450));
         initComponents();
         loadGoals();
         refreshProgress();
     }
 
-    
     private void initComponents() {
-        JLabel lblTitle = new JLabel("My Goals", SwingConstants.CENTER);
+        lblTitle = new JLabel("My Goals", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        add(lblTitle, BorderLayout.NORTH);
+        lblTitle.setBounds(0, 10, 620, 30);
+        add(lblTitle);
 
-        // Form
+        // ---------- Set Goals ----------
+        lblIntake = new JLabel("Daily Calorie Intake Goal (kcal):");
+        lblIntake.setBounds(40, 60, 280, 25);
+        add(lblIntake);
         txtCalorieIntake = new JTextField();
-        txtCalorieBurn = new JTextField();
-        txtWeeklyMinutes = new JTextField();
+        txtCalorieIntake.setBounds(330, 60, 200, 25);
+        add(txtCalorieIntake);
 
-        JPanel form = new JPanel(new GridLayout(3, 2, 10, 10));
-        form.add(new JLabel("Daily Calorie Intake Goal (kcal):"));
-        form.add(txtCalorieIntake);
-        form.add(new JLabel("Daily Calories Burned Goal (kcal):"));
-        form.add(txtCalorieBurn);
-        form.add(new JLabel("Weekly Workout Minutes Goal:"));
-        form.add(txtWeeklyMinutes);
+        lblBurn = new JLabel("Daily Calories Burned Goal (kcal):");
+        lblBurn.setBounds(40, 95, 280, 25);
+        add(lblBurn);
+        txtCalorieBurn = new JTextField();
+        txtCalorieBurn.setBounds(330, 95, 200, 25);
+        add(txtCalorieBurn);
+
+        lblMinutes = new JLabel("Weekly Workout Minutes Goal:");
+        lblMinutes.setBounds(40, 130, 280, 25);
+        add(lblMinutes);
+        txtWeeklyMinutes = new JTextField();
+        txtWeeklyMinutes.setBounds(330, 130, 200, 25);
+        add(txtWeeklyMinutes);
 
         btnSaveGoals = new JButton("Save Goals");
-        btnSaveGoals.addActionListener(e -> saveGoals());
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttons.add(btnSaveGoals);
+        btnSaveGoals.setBounds(250, 170, 120, 30);
+        btnSaveGoals.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveGoals();
+            }
+        });
+        add(btnSaveGoals);
 
-        JPanel formSection = new JPanel(new BorderLayout(10, 10));
-        formSection.setBorder(BorderFactory.createTitledBorder("Set Your Goals"));
-        formSection.add(form, BorderLayout.CENTER);
-        formSection.add(buttons, BorderLayout.SOUTH);
+        // ---------- Progress ----------
+        lblProgress = new JLabel("Progress");
+        lblProgress.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lblProgress.setBounds(40, 220, 300, 25);
+        add(lblProgress);
 
-        // Progress
+        lblBarIntake = new JLabel("Calories Consumed (Today)");
+        lblBarIntake.setBounds(40, 255, 400, 20);
+        add(lblBarIntake);
         barIntake = createBar();
+        barIntake.setBounds(40, 278, 540, 25);
+        add(barIntake);
+
+        lblBarBurn = new JLabel("Calories Burned (Today)");
+        lblBarBurn.setBounds(40, 315, 400, 20);
+        add(lblBarBurn);
         barBurn = createBar();
+        barBurn.setBounds(40, 338, 540, 25);
+        add(barBurn);
+
+        lblBarMinutes = new JLabel("Workout Minutes (This Week)");
+        lblBarMinutes.setBounds(40, 375, 400, 20);
+        add(lblBarMinutes);
         barMinutes = createBar();
-
-        JPanel progress = new JPanel(new GridLayout(3, 1, 10, 10));
-        progress.setBorder(BorderFactory.createTitledBorder("Progress"));
-        progress.add(wrapBar("Calories Consumed (Today)", barIntake));
-        progress.add(wrapBar("Calories Burned (Today)", barBurn));
-        progress.add(wrapBar("Workout Minutes (This Week)", barMinutes));
-
-        JPanel center = new JPanel(new BorderLayout(10, 15));
-        center.add(formSection, BorderLayout.NORTH);
-        center.add(progress, BorderLayout.CENTER);
-        add(center, BorderLayout.CENTER);
+        barMinutes.setBounds(40, 398, 540, 25);
+        add(barMinutes);
     }
 
     private JProgressBar createBar() {
         JProgressBar bar = new JProgressBar(0, 100);
         bar.setStringPainted(true);
         return bar;
-    }
-
-    private JPanel wrapBar(String label, JProgressBar bar) {
-        JPanel p = new JPanel(new BorderLayout(5, 5));
-        p.add(new JLabel(label), BorderLayout.NORTH);
-        p.add(bar, BorderLayout.CENTER);
-        return p;
     }
 
     private void loadGoals() {
@@ -128,10 +144,9 @@ public class GoalsPanel extends JPanel {
 
     public void refreshProgress() {
         LocalDate today = LocalDate.now();
- 
-        LocalDate weekStart = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        // Lunes ng linggong ito (Monday = 1, kaya 0 ang aalisin kapag Lunes ngayon)
+        LocalDate weekStart = today.minusDays(today.getDayOfWeek().getValue() - 1);
 
-        
         double consumedToday = 0;
         for (Meal m : user.getMeals()) {
             if (m.getLoggedAt() != null && m.getLoggedAt().toLocalDate().equals(today)) {
@@ -143,14 +158,13 @@ public class GoalsPanel extends JPanel {
         int minutesThisWeek = 0;
         for (Workout w : user.getWorkouts()) {
             if (w.getLoggedAt() == null) {
-                continue; 
+                continue;
             }
             LocalDate date = w.getLoggedAt().toLocalDate();
 
             if (date.equals(today)) {
                 burnedToday += w.getCaloriesBurned();
             }
-          
             if (!date.isBefore(weekStart) && !date.isAfter(today)) {
                 minutesThisWeek += w.getDuration();
             }

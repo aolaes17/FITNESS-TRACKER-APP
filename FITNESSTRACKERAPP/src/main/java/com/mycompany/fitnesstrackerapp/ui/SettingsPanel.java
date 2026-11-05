@@ -4,14 +4,19 @@ import com.mycompany.fitnesstrackerapp.model.User;
 import com.mycompany.fitnesstrackerapp.profile.UserProfile;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class SettingsPanel extends JPanel {
 
     private final User user;
-    private final Runnable onLogout; 
+    private final Runnable onLogout;
 
+    private JLabel lblTitle, lblProfile, lblName, lblUsername;
+    private JLabel lblPassword, lblCurrent, lblNew, lblConfirm;
     private JTextField txtName, txtUsername;
     private JPasswordField txtCurrentPassword, txtNewPassword, txtConfirmPassword;
     private JButton btnSaveProfile, btnChangePassword, btnLogout;
@@ -23,80 +28,97 @@ public class SettingsPanel extends JPanel {
     public SettingsPanel(User user, Runnable onLogout) {
         this.user = user;
         this.onLogout = onLogout;
-        setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        setLayout(null);
+        setPreferredSize(new Dimension(620, 450));
         initComponents();
         loadUserData();
     }
 
     private void initComponents() {
-        JLabel lblTitle = new JLabel("Account Settings", SwingConstants.CENTER);
+        lblTitle = new JLabel("Account Settings", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        add(lblTitle, BorderLayout.NORTH);
+        lblTitle.setBounds(0, 10, 620, 30);
+        add(lblTitle);
 
-        JPanel content = new JPanel();
-        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-        content.add(createProfileSection());
-        content.add(Box.createVerticalStrut(15));
-        content.add(createPasswordSection());
-        add(content, BorderLayout.CENTER);
+        // ---------- Profile ----------
+        lblProfile = new JLabel("Profile");
+        lblProfile.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lblProfile.setBounds(40, 55, 200, 25);
+        add(lblProfile);
 
-        btnLogout = new JButton("Logout");
-        btnLogout.addActionListener(e -> {
-            if (onLogout != null) {
-                onLogout.run();
-            }
-        });
-        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        bottom.add(btnLogout);
-        add(bottom, BorderLayout.SOUTH);
-    }
-
-    private JPanel createProfileSection() {
+        lblName = new JLabel("Name:");
+        lblName.setBounds(40, 90, 200, 25);
+        add(lblName);
         txtName = new JTextField();
-        txtUsername = new JTextField();
+        txtName.setBounds(250, 90, 280, 25);
+        add(txtName);
 
-        JPanel form = new JPanel(new GridLayout(2, 2, 10, 10));
-        form.add(new JLabel("Name:"));
-        form.add(txtName);
-        form.add(new JLabel("Username:"));
-        form.add(txtUsername);
+        lblUsername = new JLabel("Username:");
+        lblUsername.setBounds(40, 125, 200, 25);
+        add(lblUsername);
+        txtUsername = new JTextField();
+        txtUsername.setBounds(250, 125, 280, 25);
+        add(txtUsername);
 
         btnSaveProfile = new JButton("Save Profile");
-        btnSaveProfile.addActionListener(e -> saveProfile());
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttons.add(btnSaveProfile);
+        btnSaveProfile.setBounds(250, 160, 140, 30);
+        btnSaveProfile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveProfile();
+            }
+        });
+        add(btnSaveProfile);
 
-        JPanel section = new JPanel(new BorderLayout(10, 10));
-        section.setBorder(BorderFactory.createTitledBorder("Profile"));
-        section.add(form, BorderLayout.CENTER);
-        section.add(buttons, BorderLayout.SOUTH);
-        return section;
-    }
+        // ---------- Change Password ----------
+        lblPassword = new JLabel("Change Password");
+        lblPassword.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lblPassword.setBounds(40, 215, 200, 25);
+        add(lblPassword);
 
-    private JPanel createPasswordSection() {
+        lblCurrent = new JLabel("Current Password:");
+        lblCurrent.setBounds(40, 250, 200, 25);
+        add(lblCurrent);
         txtCurrentPassword = new JPasswordField();
-        txtNewPassword = new JPasswordField();
-        txtConfirmPassword = new JPasswordField();
+        txtCurrentPassword.setBounds(250, 250, 280, 25);
+        add(txtCurrentPassword);
 
-        JPanel form = new JPanel(new GridLayout(3, 2, 10, 10));
-        form.add(new JLabel("Current Password:"));
-        form.add(txtCurrentPassword);
-        form.add(new JLabel("New Password:"));
-        form.add(txtNewPassword);
-        form.add(new JLabel("Confirm New Password:"));
-        form.add(txtConfirmPassword);
+        lblNew = new JLabel("New Password:");
+        lblNew.setBounds(40, 285, 200, 25);
+        add(lblNew);
+        txtNewPassword = new JPasswordField();
+        txtNewPassword.setBounds(250, 285, 280, 25);
+        add(txtNewPassword);
+
+        lblConfirm = new JLabel("Confirm New Password:");
+        lblConfirm.setBounds(40, 320, 200, 25);
+        add(lblConfirm);
+        txtConfirmPassword = new JPasswordField();
+        txtConfirmPassword.setBounds(250, 320, 280, 25);
+        add(txtConfirmPassword);
 
         btnChangePassword = new JButton("Change Password");
-        btnChangePassword.addActionListener(e -> changePassword());
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttons.add(btnChangePassword);
+        btnChangePassword.setBounds(250, 355, 160, 30);
+        btnChangePassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changePassword();
+            }
+        });
+        add(btnChangePassword);
 
-        JPanel section = new JPanel(new BorderLayout(10, 10));
-        section.setBorder(BorderFactory.createTitledBorder("Change Password"));
-        section.add(form, BorderLayout.CENTER);
-        section.add(buttons, BorderLayout.SOUTH);
-        return section;
+        // ---------- Logout ----------
+        btnLogout = new JButton("Logout");
+        btnLogout.setBounds(460, 405, 120, 30);
+        btnLogout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (onLogout != null) {
+                    onLogout.run();
+                }
+            }
+        });
+        add(btnLogout);
     }
 
     private void loadUserData() {
@@ -140,4 +162,3 @@ public class SettingsPanel extends JPanel {
         }
     }
 }
-
