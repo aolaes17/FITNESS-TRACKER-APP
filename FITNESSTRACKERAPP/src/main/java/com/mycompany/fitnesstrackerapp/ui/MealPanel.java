@@ -18,7 +18,7 @@ public class MealPanel extends JFrame implements ActionListener {
     JComboBox<String> cmbSort;
     JButton btnAdd, btnClear, btnSearch, btnSort, btnBack;
     JTextArea txtMeals;
- 
+
     MealManager mealManager = new MealManager();
     int currentUserId = 1; 
 
@@ -96,7 +96,6 @@ public class MealPanel extends JFrame implements ActionListener {
         txtMeals.setEditable(false);
         txtMeals.setBackground(Color.WHITE);
         
-       
         JScrollPane scrollPane = new JScrollPane(txtMeals);
         scrollPane.setBounds(50, 270, 870, 330);
         add(scrollPane);
@@ -112,14 +111,19 @@ public class MealPanel extends JFrame implements ActionListener {
         btnSort.addActionListener(this);
         btnBack.addActionListener(this);
 
+        
         mealManager.loadMeals(currentUserId);
         txtMeals.setText(mealManager.getMealsAsText());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-        
+        if (e.getSource() == btnBack) {
+            MainDashboard app = new MainDashboard();
+            app.setVisible(true);
+            this.dispose();
+        }
+ 
         if (e.getSource() == btnClear) {
             txtMealName.setText("");
             txtCalories.setText("");
@@ -128,45 +132,37 @@ public class MealPanel extends JFrame implements ActionListener {
             mealManager.loadMeals(currentUserId);
             txtMeals.setText(mealManager.getMealsAsText());
         }
-        
-        
-        else if (e.getSource() == btnBack) {
-            new MainDashboard().setVisible(true);
-            this.dispose();
-        }
-        
-        
-        else if (e.getSource() == btnAdd) {
+ 
+        if (e.getSource() == btnAdd) {
             String name = txtMealName.getText().trim();
             String calStr = txtCalories.getText().trim();
             String nutrition = txtNutritionalInfo.getText().trim();
 
             if (name.isEmpty() || calStr.isEmpty() || nutrition.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Paki-fill ang lahat ng fields!");
+                JOptionPane.showMessageDialog(this, "Please fill in all fields!");
             } else {
                 try {
                     double calories = Double.parseDouble(calStr);
                     boolean success = mealManager.saveMeal(currentUserId, name, calories, nutrition);
                     
                     if (success) {
-                        JOptionPane.showMessageDialog(this, "Meal added successfully!");              
+                        JOptionPane.showMessageDialog(this, "Meal added successfully!");
                         mealManager.loadMeals(currentUserId);
-                        txtMeals.setText(mealManager.getMealsAsText());                        
+                        txtMeals.setText(mealManager.getMealsAsText());
                         
                         txtMealName.setText("");
                         txtCalories.setText("");
                         txtNutritionalInfo.setText("");
                     } else {
-                        JOptionPane.showMessageDialog(this, "Failed to save meal (Puno na ang array o may error sa DB).");
+                        JOptionPane.showMessageDialog(this, "Failed to save meal.");
                     }
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Ang Calories ay dapat valid na numero!");
+                    JOptionPane.showMessageDialog(this, "Calories must be a valid number!");
                 }
             }
         }
-        
-       
-        else if (e.getSource() == btnSearch) {
+
+        if (e.getSource() == btnSearch) {
             String searchName = txtSearch.getText().trim();
             if (searchName.isEmpty()) {
                 mealManager.loadMeals(currentUserId);
@@ -184,9 +180,8 @@ public class MealPanel extends JFrame implements ActionListener {
                 }
             }
         }
-        
-        ComboBox
-        else if (e.getSource() == btnSort) {
+
+        if (e.getSource() == btnSort) {
             String selectedOption = (String) cmbSort.getSelectedItem();
             
             if ("Calories".equals(selectedOption)) {
