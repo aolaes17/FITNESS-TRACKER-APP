@@ -1,24 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.fitnesstrackerapp.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-/**
- *
- * @author User
- */
-public class MainDashboard extends JFrame implements ActionListener{
-    
-    
-    
+public class MainDashboard extends JFrame implements ActionListener {
+
     JLabel lblTitle;
     JButton btnHome, btnWorkout, btnMeals;
-    JButton btnProgress, btnSettings, btnLogout;
+    JButton btnProgress, btnGoals, btnSettings, btnLogout;
     JPanel pnlWorkouts, pnlCalories;
     JPanel pnlGoal, pnlRecentActivity;
     JLabel lblWorkouts, lblCalories;
@@ -52,19 +42,21 @@ public class MainDashboard extends JFrame implements ActionListener{
         btnProgress.setBounds(50, 340, 150, 50);
         add(btnProgress);
 
+        btnGoals = new JButton("GOALS");
+        btnGoals.setBounds(50, 410, 150, 50);
+        add(btnGoals);
+
         btnSettings = new JButton("SETTINGS");
-        btnSettings.setBounds(50, 410, 150, 50);
+        btnSettings.setBounds(50, 480, 150, 50);
         add(btnSettings);
 
         btnLogout = new JButton("LOGOUT");
-        btnLogout.setBounds(50, 480, 150, 50);
+        btnLogout.setBounds(50, 550, 150, 50);
         add(btnLogout);
 
         pnlWorkouts = new JPanel();
         pnlWorkouts.setLayout(null);
-        pnlWorkouts.setBorder(
-            BorderFactory.createTitledBorder("Total Workouts")
-        );
+        pnlWorkouts.setBorder(BorderFactory.createTitledBorder("Total Workouts"));
         pnlWorkouts.setBounds(250, 130, 200, 130);
         add(pnlWorkouts);
 
@@ -74,9 +66,7 @@ public class MainDashboard extends JFrame implements ActionListener{
 
         pnlCalories = new JPanel();
         pnlCalories.setLayout(null);
-        pnlCalories.setBorder(
-            BorderFactory.createTitledBorder("Total Calories")
-        );
+        pnlCalories.setBorder(BorderFactory.createTitledBorder("Total Calories"));
         pnlCalories.setBounds(480, 130, 200, 130);
         add(pnlCalories);
 
@@ -86,9 +76,7 @@ public class MainDashboard extends JFrame implements ActionListener{
 
         pnlGoal = new JPanel();
         pnlGoal.setLayout(null);
-        pnlGoal.setBorder(
-            BorderFactory.createTitledBorder("Fitness Goal")
-        );
+        pnlGoal.setBorder(BorderFactory.createTitledBorder("Fitness Goal"));
         pnlGoal.setBounds(710, 130, 200, 130);
         add(pnlGoal);
 
@@ -98,9 +86,7 @@ public class MainDashboard extends JFrame implements ActionListener{
 
         pnlRecentActivity = new JPanel();
         pnlRecentActivity.setLayout(null);
-        pnlRecentActivity.setBorder(
-            BorderFactory.createTitledBorder("Recent Activity")
-        );
+        pnlRecentActivity.setBorder(BorderFactory.createTitledBorder("Recent Activity"));
         pnlRecentActivity.setBounds(250, 300, 660, 250);
         add(pnlRecentActivity);
 
@@ -112,24 +98,54 @@ public class MainDashboard extends JFrame implements ActionListener{
         btnWorkout.addActionListener(this);
         btnMeals.addActionListener(this);
         btnProgress.addActionListener(this);
+        btnGoals.addActionListener(this);
         btnSettings.addActionListener(this);
         btnLogout.addActionListener(this);
-        
+    }
+
+    // Ang WorkoutPanels, SettingsPanel at GoalsPanel ay JPanel (hindi JFrame),
+    // kaya kailangan natin silang ilagay sa JFrame para makita.
+    private void openPanel(String title, JPanel panel) {
+        JFrame frame = new JFrame(title);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.add(panel);
+        frame.setSize(720, 520);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnProgress){
-            ProgressPanel app = new ProgressPanel();
-        app.setVisible(true);
-
-        this.dispose();
+        if (e.getSource() == btnWorkout) {
+            openPanel("Workouts", new WorkoutPanels());
         }
-        if(e.getSource() == btnLogout){
-            LoginForm app = new LoginForm();
-        app.setVisible(true);
 
-        this.dispose();
+        if (e.getSource() == btnMeals) {
+            MealPanel app = new MealPanel();
+            app.setVisible(true);
+            this.dispose();
+        }
+
+        if (e.getSource() == btnProgress) {
+            ProgressPanel app = new ProgressPanel();
+            app.setVisible(true);
+            this.dispose();
+        }
+
+        if (e.getSource() == btnGoals) {
+            openPanel("Goals", new GoalsPanel());
+        }
+
+        if (e.getSource() == btnSettings) {
+            openPanel("Settings", new SettingsPanel());
+        }
+
+        if (e.getSource() == btnLogout) {
+            LoginFormUI app = new LoginFormUI();
+            app.setVisible(true);
+            this.dispose();
         }
     }
+
+   
 }

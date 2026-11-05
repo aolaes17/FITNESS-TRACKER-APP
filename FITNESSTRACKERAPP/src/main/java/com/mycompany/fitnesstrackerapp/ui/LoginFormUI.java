@@ -1,31 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.fitnesstrackerapp.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-/**
- *
- * @author User
- */
-public class LoginFormUI {
-    
 
-/**
- *
- * @author User
- */
-public class LoginForm extends JFrame implements ActionListener {
-    
-    JLabel lblUsername,lblpassword,lblTitle;
+public class LoginFormUI extends JFrame implements ActionListener {
+
+    JLabel lblUsername, lblpassword, lblTitle;
     JPasswordField pfpassword;
     JTextField tfusername;
     JButton btnLogin, btnRegister;
-    
-    LoginForm(){
+
+    public LoginFormUI() {
         setLayout(null);
         setSize(1000, 700);
         setTitle("Login");
@@ -61,25 +47,21 @@ public class LoginForm extends JFrame implements ActionListener {
         btnRegister.setBounds(470, 430, 150, 50);
         add(btnRegister);
         btnRegister.addActionListener(this);
-    
-}
-    
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnRegister){
+        if (e.getSource() == btnRegister) {
             RegisterForm app = new RegisterForm();
-        app.setVisible(true);
-
-        this.dispose();
+            app.setVisible(true);
+            this.dispose();
         }
-        
-        if(e.getSource() == btnLogin){
-            MainDashboard app = new MainDashboard();
-        app.setVisible(true);
 
-        this.dispose();
+        if (e.getSource() == btnLogin) {
+            
+            MainDashboard app = new MainDashboard();
+            app.setVisible(true);
+            this.dispose();
         }
     }
-    
 }

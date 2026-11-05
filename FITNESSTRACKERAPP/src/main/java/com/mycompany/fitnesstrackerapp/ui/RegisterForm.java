@@ -1,35 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.fitnesstrackerapp.ui;
-/**
- *
- * @author User
- */
-public class RegisterForm {
-    
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-/**
- *
- * @author User
- */
-public class RegisterForm extends JFrame implements ActionListener{
+public class RegisterForm extends JFrame implements ActionListener {
+
     JLabel lblTitle, lblName, lblUsername;
     JLabel lblEmail, lblPassword, lblConfirmPassword;
+
     JTextField tfName, tfUsername, tfEmail;
+
     JPasswordField pfPassword, pfConfirmPassword;
+
     JButton btnRegister, btnCancel;
-    
+
     public RegisterForm() {
 
         setLayout(null);
         setSize(1000, 700);
         setTitle("Register");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
         lblTitle = new JLabel("CREATE ACCOUNT");
         lblTitle.setBounds(400, 70, 250, 50);
@@ -82,16 +74,24 @@ public class RegisterForm extends JFrame implements ActionListener{
         btnCancel = new JButton("CANCEL");
         btnCancel.setBounds(470, 490, 150, 50);
         add(btnCancel);
+
+        btnRegister.addActionListener(this);
         btnCancel.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnCancel){
-            LoginForm app = new LoginForm();
-        app.setVisible(true);
 
-        this.dispose();
+        if (e.getSource() == btnCancel) {
+            LoginFormUI app = new LoginFormUI();
+            app.setVisible(true);
+            this.dispose();
+        }
+
+        if (e.getSource() == btnRegister) {
+            // Registration logic will go here.
         }
     }
+
+    
 }
