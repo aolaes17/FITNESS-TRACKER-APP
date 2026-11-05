@@ -8,6 +8,9 @@ import com.mycompany.fitnesstrackerapp.profile.UserProfile;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 
 public class GoalsPanel extends JPanel {
 
@@ -63,9 +66,9 @@ public class GoalsPanel extends JPanel {
 
         JPanel progress = new JPanel(new GridLayout(3, 1, 10, 10));
         progress.setBorder(BorderFactory.createTitledBorder("Progress"));
-        progress.add(wrapBar("Calories Consumed", barIntake));
-        progress.add(wrapBar("Calories Burned", barBurn));
-        progress.add(wrapBar("Workout Minutes", barMinutes));
+        progress.add(wrapBar("Calories Consumed (Today)", barIntake));
+        progress.add(wrapBar("Calories Burned (Today)", barBurn));
+        progress.add(wrapBar("Workout Minutes (This Week)", barMinutes));
 
         JPanel center = new JPanel(new BorderLayout(10, 15));
         center.add(formSection, BorderLayout.NORTH);
@@ -124,19 +127,38 @@ public class GoalsPanel extends JPanel {
     }
 
     public void refreshProgress() {
-        double consumed = 0;
+        LocalDate today = LocalDate.now();
+ 
+        LocalDate weekStart = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+
+        
+        double consumedToday = 0;
         for (Meal m : user.getMeals()) {
-            consumed += m.getCalories();
+            if (m.getLoggedAt() != null && m.getLoggedAt().toLocalDate().equals(today)) {
+                consumedToday += m.getCalories();
+            }
         }
-        double burned = 0;
-        int minutes = 0;
+
+        double burnedToday = 0;
+        int minutesThisWeek = 0;
         for (Workout w : user.getWorkouts()) {
-            burned += w.getCaloriesBurned();
-            minutes += w.getDuration();
+            if (w.getLoggedAt() == null) {
+                continue; 
+            }
+            LocalDate date = w.getLoggedAt().toLocalDate();
+
+            if (date.equals(today)) {
+                burnedToday += w.getCaloriesBurned();
+            }
+          
+            if (!date.isBefore(weekStart) && !date.isAfter(today)) {
+                minutesThisWeek += w.getDuration();
+            }
         }
-        setBar(barIntake, consumed, goals.getDailyCalorieIntake(), "kcal");
-        setBar(barBurn, burned, goals.getDailyCalorieBurn(), "kcal");
-        setBar(barMinutes, minutes, goals.getWeeklyWorkoutMinutes(), "min");
+
+        setBar(barIntake, consumedToday, goals.getDailyCalorieIntake(), "kcal");
+        setBar(barBurn, burnedToday, goals.getDailyCalorieBurn(), "kcal");
+        setBar(barMinutes, minutesThisWeek, goals.getWeeklyWorkoutMinutes(), "min");
     }
 
     private void setBar(JProgressBar bar, double value, double goal, String unit) {
