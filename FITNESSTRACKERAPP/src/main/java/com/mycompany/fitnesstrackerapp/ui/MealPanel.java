@@ -133,66 +133,6 @@ public class MealPanel extends JFrame implements ActionListener {
             txtMeals.setText(mealManager.getMealsAsText());
         }
  
-        if (e.getSource() == btnAdd) {
-            String name = txtMealName.getText().trim();
-            String calStr = txtCalories.getText().trim();
-            String nutrition = txtNutritionalInfo.getText().trim();
-
-            if (name.isEmpty() || calStr.isEmpty() || nutrition.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please fill in all fields!");
-            } else {
-                try {
-                    double calories = Double.parseDouble(calStr);
-                    boolean success = mealManager.saveMeal(currentUserId, name, calories, nutrition);
-                    
-                    if (success) {
-                        JOptionPane.showMessageDialog(this, "Meal added successfully!");
-                        mealManager.loadMeals(currentUserId);
-                        txtMeals.setText(mealManager.getMealsAsText());
-                        
-                        txtMealName.setText("");
-                        txtCalories.setText("");
-                        txtNutritionalInfo.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Failed to save meal.");
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Calories must be a valid number!");
-                }
-            }
-        }
-
-        if (e.getSource() == btnSearch) {
-            String searchName = txtSearch.getText().trim();
-            if (searchName.isEmpty()) {
-                mealManager.loadMeals(currentUserId);
-                txtMeals.setText(mealManager.getMealsAsText());
-            } else {
-                Meal found = mealManager.searchByName(searchName);
-                if (found != null) {
-                    String resultText = "Found:\nID: " + found.getMealId()
-                            + " | " + found.getName()
-                            + " | " + found.getCalories() + " cal"
-                            + " | " + found.getNutritionalInfo() + "\n";
-                    txtMeals.setText(resultText);
-                } else {
-                    txtMeals.setText("Meal not found.");
-                }
-            }
-        }
-
-        if (e.getSource() == btnSort) {
-            String selectedOption = (String) cmbSort.getSelectedItem();
-            
-            if ("Calories".equals(selectedOption)) {
-                mealManager.sortByCalories();
-            } else if ("Name".equals(selectedOption)) {
-                mealManager.sortByName();
-            } else if ("Nutritional Info".equals(selectedOption)) {
-                mealManager.sortByNutritionalInfo();
-            }
-            
-            txtMeals.setText(mealManager.getMealsAsText());
-        }
+    
     }
 }
